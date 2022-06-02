@@ -2,15 +2,25 @@ import modelo
 import vista
 
 
-class axiomaTerminalController:
-    def __init__(self):
-        self.model = modelo.axiomaModel()
-        self.view = vista.vistaAxiomasPorTerminal(5)
+class terminalController:
 
-    def run(self):
-        vNroDeAxiomaEscogido = int(self.view.escojeAxioma())
-        if vNroDeAxiomaEscogido >=1:
-         vAxioma = self.model.obtenerAxioma(vNroDeAxiomaEscogido)
-         self.view.mostrar(vAxioma)
-        else:
-            print('El numero no es mayor a 1')
+    def __init__(self):
+        self.view = vista.display()
+        self.__tipoDeEmpleado = self.view.EscojeTipoEmpleado()
+        # NOTA
+        # el tema aqui, es que controller decide que clase instanciar, esta eso bien??
+        # si, por que almacenista, chofer, contador estan en clases separadas
+        if (self.__tipoDeEmpleado == '1'):
+            self.model = modelo.Almacenista(
+                self.view.EscojeEmpleado(), self.__tipoDeEmpleado)
+
+        elif (self.__tipoDeEmpleado == '2'):
+            self.model = modelo.Almacenista(
+                self.view.EscojeEmpleado(), self.__tipoDeEmpleado)
+        
+        
+       
+
+    def run(self):        
+        self.view.MuestraDatosDelEmpleado(list(self.model.__dict__.values()))
+        vSalario = self.model.DeterminarSalario()

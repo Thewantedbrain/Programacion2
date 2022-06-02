@@ -1,63 +1,36 @@
+from __future__ import print_function
+from colorclass import Color
+from terminaltables import SingleTable
 
-class vistaAxiomasPorTerminal:
-    def __init__(self,MaxAxioma):
-        #atributos
-        self.__axiomaInicial = 0
-        self.MaxAxioma = MaxAxioma
-       #metodos
-    def mostrar(self, vAxioma):
-        print("y el axioma es: ", vAxioma)
-    def escojeAxioma(self):
+
+class display:    
+
+    def EscojeTipoEmpleado(self):
         vResult = None
-        vResult = input("Tipee el nro. de axioma que quiere ver: ")
+        vResult = input("seleccione el tipo de empleado:")
+        while not vResult.isdigit():
+            print("Seleccione un numero! ")
+            vResult = input("seleccione el tipo de empleado:")
         return vResult
 
-    def mostrarAxiomaInicial(self):
-        print('el axioma inicial: ',self.__axiomaInicial)
-
-    def asignarAxiomaInicial(self, axiomaInicial):
-        self.__axiomaInicial = axiomaInicial
-
-class vistaAxiomasHTML(vistaAxiomasPorTerminal):
-    def mostrar(self, vAxioma):
-        vArchivoHtml = open('vistaMVC.html', 'w')
-
-        vPlantilla = """
-        <html>
-        <head>
-        <title> Telematica - Prog2 </title>
-        </head>
-        <body> 
-        <h1>Modelo-Vista-Controlador (MVC)</h1>
-        <h2>Vista html</h2>
-        <table border="1">
-        <tbody>
-        <tr>
-        <td>y el Axioma es: </td>
-        </tr>
-        <tr>
-        <td>        
-        """
-        vPlantilla += vAxioma
-        vPlantilla += """
-        </td>
-        </tr>
-        </tbody>
-        </table>
-        </body>
-        </html>
-        """
-
-        vArchivoHtml.write(vPlantilla)
-        vArchivoHtml.close()
-
-    def escojeAxioma(self):#polimorfismo
+    def EscojeEmpleado(self):
         vResult = None
-        print('Vista por HTML')
-        vResult = input("Tipee el nro. de axioma que quiere ver: ",self.MaxAxioma)
+        vResult = input("Tipee el nro. de cédula del empleado: ")
+        while not vResult.isdigit():
+            print("Seleccione numeros! ")
+            vResult = input("Tipee el nro. de cédula del empleado:")
         return vResult
-   
 
-vista1 = vistaAxiomasPorTerminal(5)
-vista1.asignarAxiomaInicial(1)
-vista1.mostrarAxiomaInicial()
+    def MuestraDatosDelEmpleado(self, vEmpleado):        
+        vData = [
+            [Color('Cédula'), Color('{autocyan}Nombre{/autocyan}'), Color(
+                '{autocyan}Apellido{/autocyan}'), Color('Salario'), Color('F. Nac')],
+            [vEmpleado[0], vEmpleado[2], vEmpleado[3], vEmpleado[4], vEmpleado[5]]
+        ]
+
+        vResult = SingleTable(vData, ' '+' '.join(vEmpleado[2:4])+' ')
+        vResult.inner_heading_row_border = False
+        vResult.inner_row_border = True
+
+        vResult.justify_columns = {0: 'center', 1: 'center', 2: 'center'}
+        print(vResult.table)
